@@ -80,7 +80,7 @@ header img{
 }
 
 header h1{
-    word-wrap: none;
+    white-space: nowrap;
 }
 
 header nav ul{
@@ -103,4 +103,6 @@ a{
 footer{
     background-color: #A3C8C0;
     padding: 1rem;
-    displa
+    display: grid;
+    align-items: center;
+}

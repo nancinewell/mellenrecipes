@@ -23,6 +23,14 @@ var errorController = require('./controllers/error');
 var User = require('./models/user');
 
 var MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
+
+var cors = require('cors');
+
+var corsOptions = {
+  origin: "https://<your_app_name>.herokuapp.com/",
+  optionsSuccessStatus: 200
+}; //const MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
+
 var app = express();
 var store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -49,6 +57,7 @@ app.use(session({
   saveUninitialized: false,
   store: store
 }));
+app.use(cors(corsOptions));
 app.use(csrfProtection);
 app.use(flash());
 app.use(function (req, res, next) {
@@ -74,8 +83,9 @@ app.use(authRoutes);
 app.use(errorController.get404);
 var config = {
   autoIndex: false,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useNewUrlParser: true //,family: 4
+
 };
 mongoose.connect(MONGODB_URI, config).then(function (result) {
   app.listen(PORT);

@@ -12,6 +12,18 @@ const User = require('./models/user');
 
 const MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
 
+
+const cors = require('cors');
+const corsOptions = {
+    origin: "https://<your_app_name>.herokuapp.com/",
+    optionsSuccessStatus: 200
+};
+
+
+                        
+
+//const MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
+
 const app = express();
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -19,6 +31,7 @@ const store = new MongoDBStore({
   //you can set when it will expire and it will be automatically cleaned up by mongodb
 });
 const csrfProtection = csrf();
+
 
 
 app.set('view engine', 'ejs');
@@ -32,6 +45,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: 'triedandtruefamilyrecipes', resave: false, saveUninitialized: false, store: store}));
 
+app.use(cors(corsOptions));
 app.use(csrfProtection);
 app.use(flash());
 
@@ -63,10 +77,12 @@ app.use(errorController.get404);
 
 
 const config = {
-  autoIndex: false,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+    autoIndex: false,
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+    //,family: 4
 };
+
 
 mongoose
   .connect(
