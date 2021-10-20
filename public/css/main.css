@@ -1,0 +1,106 @@
+/* *** Primary color: Turqoise
+
+   shade 0 = #478879 
+   shade 1 = #A3C8C0 
+   shade 2 = #6DA296 
+   shade 3 = #286E5F 
+   shade 4 = #115445 
+
+*** Secondary color (1): Pinky Purple
+
+   shade 0 = #B45E82 
+   shade 1 = #E8BECF 
+   shade 2 = #D691AE 
+   shade 3 = #92355C 
+   shade 4 = #6F163B 
+
+*** Secondary color (2): Green
+
+   shade 0 = #99C165 
+   shade 1 = #DEF2C5 
+   shade 2 = #C5E59B 
+   shade 3 = #719C38 
+   shade 4 = #4D7718 
+
+*** Complement color: Orange
+
+   shade 0 = #D3956E 
+   shade 1 = #FFE2D0 
+   shade 2 = #FBC9A9 
+   shade 3 = #AB683E 
+   shade 4 = #82421A 
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Spartan:wght@400;700&display=swap');
+
+/* * * * * * * * * * * * * * * * * GENERAL * * * * * * * * * * * * * * * * * */
+body{
+    background-color: #fff;
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 10rem 1fr 5rem;
+    font-family: 'Spartan', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Amatic SC', cursive;
+    margin: .75rem 0;
+}
+
+h1{
+    font-size: 3rem;
+}
+
+main{
+    background-color: #fff;
+    padding: 1rem;
+}
+
+
+/* * * * * * * * * * * * * * * * * HEADER * * * * * * * * * * * * * * * * * */
+
+header{
+    background-color: #A3C8C0;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+}
+
+header div{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+}
+
+header img{
+    width: 5rem;
+    align-self: center;
+    justify-self: center;
+}
+
+header h1{
+    word-wrap: none;
+}
+
+header nav ul{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: start;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* * * * * * * * * * * * * * * * * ANCHORS * * * * * * * * * * * * * * * * * */
+a{
+    text-decoration: none;
+    color: #115445;
+}
+
+/* * * * * * * * * * * * * * * * * FOOTER * * * * * * * * * * * * * * * * * */
+footer{
+    background-color: #A3C8C0;
+    padding: 1rem;
+    displa
