@@ -41,6 +41,7 @@ body{
     display: grid;
     grid-template-rows: 10rem 1fr 5rem;
     font-family: 'Spartan', sans-serif;
+    width: 100vw;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -74,7 +75,7 @@ header div{
 }
 
 header img{
-    width: 5rem;
+    width: 4rem;
     align-self: center;
     justify-self: center;
 }
