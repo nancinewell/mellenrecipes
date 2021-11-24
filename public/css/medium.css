@@ -1,0 +1,99 @@
+@media screen and (min-width: 600px) {
+
+    form {
+        margin: auto;
+        max-width:500px;
+    }
+    .nav-container{
+        display: block;
+    }
+
+    #toggle:checked ~ .nav, #toggle ~ .nav{
+        transform: scale(1) translate(0,0);
+        position: static;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        width: 100vw;
+        padding: 0 3rem 0 1rem;
+    }
+
+    a.nav-item, .logout-button{
+        font-weight: bold;
+        transition: .3s;
+    }
+
+    a.nav-item:hover, .logout-button:hover{
+        color: #fff;
+    }
+
+    .toggle-container{
+        display: none;
+    }
+
+    form.nav-item{
+        display: grid;
+        justify-items: center;
+        width: auto;
+    }
+    .logout-button{
+        border:none;
+        background-color: transparent;
+        text-decoration: none;
+        color: #115445;
+        transition: .3s;
+        font-size: 1rem;
+    }
+
+
+/* * * * * * * * GRID SECTION * * * * * * */
+    .grid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+/* * * * * * * * DETAILS PAGE * * * * * * */
+
+    .details-main img{
+        width: 100%;
+        max-width: 20rem;
+        padding: 1rem;
+    }
+
+    .details-main{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas: 
+            "title title title"
+            "desc desc img"
+            "ing ing img"
+            "dir dir dir";
+
+    }
+
+    .details-main h2{
+        grid-area: title;
+    }
+
+    .details-main #description{
+        grid-area: desc;
+    }
+
+    .details-main img{
+        grid-area: img;
+        justify-self: center;
+    }
+
+    .details-main #ingredients{
+        grid-area: ing;
+    }
+    
+    .details-main #directions{
+        grid-area: dir;
+    }
+
+    .details-main p { 
+        white-space: pre-line; 
+    }
+    
+    /* * * * * * * * DON'T DELETE THIS ONE!!!! MEDIA QUERY * * * * * * */
+}

@@ -31,9 +31,18 @@
    shade 4 = #82421A 
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Spartan:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Spartan:wght@400;700&family=Bad+Script&family=Spartan:wght@400;700&display=swap');
 
 /* * * * * * * * * * * * * * * * * GENERAL * * * * * * * * * * * * * * * * * */
+*{
+    box-sizing: border-box;
+    max-width: 100vw;
+}
+
+html{
+    margin: 0;
+}
+
 body{
     background-color: #fff;
     margin: 0;
@@ -42,15 +51,16 @@ body{
     grid-template-rows: 10rem 1fr 5rem;
     font-family: 'Spartan', sans-serif;
     width: 100vw;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6{
-    font-family: 'Amatic SC', cursive;
+    font-family: 'Bad Script', cursive;
     margin: .75rem 0;
 }
 
 h1{
-    font-size: 3rem;
+    font-size: 1.5rem;
 }
 
 main{
@@ -62,48 +72,385 @@ main{
 /* * * * * * * * * * * * * * * * * HEADER * * * * * * * * * * * * * * * * * */
 
 header{
+    
     background-color: #A3C8C0;
     padding: 1rem;
     display: grid;
-    grid-template-columns: 7rem 1fr;
-}
-
-header div{
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: start;
+    grid-template-rows: auto;
+    grid-template-areas: 'logo h1 h1 toggle'
+                         'nav nav nav nav';
+    justify-items: left;
+    align-items:center;
 }
 
 header img{
-    width: 4rem;
+    width: 3rem;
+    grid-area: logo;
     align-self: center;
     justify-self: center;
 }
 
 header h1{
     white-space: nowrap;
+    grid-area: h1;
+    padding-left: 1rem;
+    color: #515252;
+    /* text-align: center; */
+    margin: 0;
 }
 
-header nav ul{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    justify-items: start;
-    align-items: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+header .nav-container{
+    justify-self: center;
+    grid-area: nav;
 }
+
+header .toggle-container{
+    grid-area: toggle;
+}
+
+.nav {
+    transition: 0.5s;
+    
+}
+
+#toggle {
+    display: none; 
+  }
+
+#toggle:checked ~ .toggle-container .button-toggle1{
+    box-shadow: 0 0 0 100vh rgba( 180, 94, 130, 0.85), inset 0 0 0 20px rgba( 0, 0, 0, 0.1);
+    transform: translateY(-5rem);
+    background-color: rgba( 180, 94, 130, 0.85);
+    z-index: 5;
+}
+
+#toggle:checked ~ .toggle-container .button-toggle2 {
+    width: 2.25rem;
+    transform: /*translateY(-25%)*/ rotate(45deg) /*translateX(-12.5%)*/;
+    border-color: #fff;
+    background-color: #fff;
+    z-index: 5;
+  }
+
+#toggle:checked ~ .toggle-container .button-toggle3{
+    width: 2.25rem;
+    transform: translateY(-10px) rotate(-45deg) /*translateX(-12.5%)*/;
+    border-color: #fff;
+    background-color: #fff;
+    z-index: 5;
+  }
+
+#toggle:checked ~ .nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    /* display: grid;
+    grid-template-columns: auto;
+    justify-items: center;
+    align-items: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem 1rem 3rem 1rem;
+    width: 100%;
+    background-color: rgba( 180, 94, 130, .85);
+    height: 100vh;
+    z-index: 10;
+    transition: 0.5s;
+    transform: scale(1);
+}
+
+#toggle:checked ~ .nav .nav-item{
+    padding: .75rem;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    z-index: 5;
+}
+
+#toggle:checked ~ .nav .nav-item:hover{
+    color: #a3c8c0;
+    /* text-shadow: 0px 0px 20px #6F163B; */
+}
+
+#toggle:checked ~ .toggle-container /*.button-toggle*/{
+    /* position: absolute;
+    display: inline-block;
+    top: 0;
+    right: 0; */
+    width: 2rem;
+    height: 2rem;
+    margin: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 100%;
+    transition: 0.6s;
+    z-index: 3;
+    }
+
+#toggle ~ .nav{
+    /* display: none; */
+    transform: scale(0) translate(100rem, -100rem);
+}
+
+.toggle-container{
+    width: 2rem;
+    height: 2rem;
+    margin: 25px;
+    /* position: absolute;
+    top: 0;
+    right: 0; */
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.button-toggle1, .button-toggle2, .button-toggle3{
+    /* position: relative;
+    display: inline-block;
+    top: 0;
+    right: 0; */
+    width: 1.5rem;
+    height: 2px;
+    background-color: transparent;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transition: 0.5s;
+    border-radius: 5px;
+    }
+
+
+
+.toggle-container:hover {
+    box-shadow: 0 0 0 15px rgba(0, 0, 0, 0.1), inset 0 0 0 20px rgba(0, 0, 0, 0.1);
+   }
+
+  #toggle:checked ~ .toggle-container .button-toggle2 {
+    transform: translateY(-50%) rotate(45deg) /*scale(0)*/;
+  }
+
+  #toggle:checked ~ .toggle-container.button-toggle3 {
+    transform: translateY(50%) rotate(-45deg) scale(0);
+  }
+
 
 /* * * * * * * * * * * * * * * * * ANCHORS * * * * * * * * * * * * * * * * * */
 a{
     text-decoration: none;
     color: #115445;
+    transition: .3s;
 }
 
+.logout-button{
+    font-family: 'Spartan', sans-serif;
+    border: none;
+    background-color:unset;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: .3s;
+}
+form.nav-item{
+    display: grid;
+    justify-items: center;
+    margin: 0;
+}
+
+/* * * * * * * * * * * * * * * * * BUTTONS * * * * * * * * * * * * * * * * * */
+
+
+
+.btn{
+    border-radius: 5px;
+    background-color: #B45E82;
+    padding: .5rem;
+    color: #fff;
+    font-family: 'Amatic SC', cursive;
+    font-weight: 700;
+    font-size: 1.5rem;
+    width: 100%;
+    margin: 1rem 0;
+    border: 1px solid #E8BECF;
+    height: 3rem;
+}
+
+/* * * * * * * * * * * * * * * * * FORMS * * * * * * * * * * * * * * * * * */
+form {
+    width: 100%;
+    max-width: 90vw;
+}
+
+fieldset{
+    border-radius: 10px;
+    width: 100%;
+}
+
+legend{
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.75rem;
+}
+
+.form-control, .form-control-select{
+    display: flex;
+    flex-direction: column;
+    margin: .5rem 0;
+    width: 100%;
+}
+
+input, textarea, select{
+    padding: .5rem;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 650px;
+    margin: .5rem 0;
+    font-family: 'Spartan', sans-serif;
+    border: 1px solid #478879;
+}
+
+label {
+    width: 100%;
+    max-width: 200px;
+}
+
+.add-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
 /* * * * * * * * * * * * * * * * * FOOTER * * * * * * * * * * * * * * * * * */
 footer{
     background-color: #A3C8C0;
     padding: 1rem;
     display: grid;
     align-items: center;
+    z-index: 1;
+}
+
+
+/* * * * * * * * * * * * * * * * * ERRORS * * * * * * * * * * * * * * * * * */
+.error-main div{
+    background-image: url(../images/retro-embossed-pape.jpg);
+    background-size: cover;
+    text-align: center;
+    opacity: .5;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.error-main h1, .error-main h2{
+    font-weight: 700;
+    text-align: center;
+    padding-top: 1rem;
+}
+
+/* * * * * * * * * * * * * * * * * GRID ITEM DISPLAY * * * * * * * * * * * * * * * * * */
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    margin: 1rem;
+    justify-items: center;
+    grid-gap: 1rem;
+}
+.grid a div{
+    width: 100%;
+}
+
+.recipe-link{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    width: 100%;
+}
+
+.recipe-link h2{
+    width: 100%;
+}
+
+.recipe-card{
+    padding: 1rem;
+    background-color: #DEF2C5;
+    border: 1px solid #DEF2C5;
+    width: 100%;
+    height: 100%;
+    justify-self: center;
+    border-radius: 10px;
+    transition: .3s;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.recipe-card:hover{
+    border: 1px solid #C5E59B;
+    box-shadow: 0 0 0 15px rgba(180, 94, 130, 0.05), 0 0 0 10px rgba(180, 94, 130, 0.05), 0 0 0 5px rgba(180, 94, 130, 0.05);
+    /* box-shadow: 0 0 0 15px rgba(222, 242, 197, 0.2), 0 0 0 10px rgba(222, 242, 197, 0.2), 0 0 0 5px rgba(222, 242, 197, 0.2); */
+}
+.recipe-card h2{
+    text-align: center;
+    height: 100px;
+    width: 100%;
+}
+.recipe-card img{
+    max-height: 10rem;    
+}
+
+.card-actions{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 2rem;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+}
+
+.card-actions a{
+    width: 100%;
+    text-align: center;
+}
+
+.card-actions, .card-actions button{
+    transition: 0.2s;
+}
+
+.card-actions a:hover, .card-actions button:hover{
+    background-color: #fff;
+    color: #B45E82;
+}
+
+.favorite-star{
+    align-self: flex-end;
+}
+
+.favorite{
+    background-color: #E8BED0;
+    border: 1px solid #E8BED0;
+}
+.favorite:hover{
+    border: 1px solid #E8BED0;
+}
+
+.favorite .favorite-star{
+    color: #B45E82;
+}
+/* * * * * * * * * * * * * * * * * DETAILS PAGE * * * * * * * * * * * * * * * * * */
+
+.details-main img{
+    width: 100%;
+    padding: 1rem;
+}
+
+.details-main h3{
+    padding: 1rem 0 0rem;
 }
