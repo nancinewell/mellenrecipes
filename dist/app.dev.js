@@ -36,9 +36,8 @@ var MongoDBStore = require('connect-mongodb-session')(session);
 
 var csrf = require('csurf');
 
-var flash = require('connect-flash');
+var flash = require('connect-flash'); // const errorController = require('./controllers/error');
 
-var errorController = require('./controllers/error');
 
 var User = require('./models/user');
 
@@ -147,8 +146,7 @@ app.use(function (error, req, res, next) {
     user: user
   }); //or render with status code or anything else.
 });
-app.use(function (error, req, res, next) {
-  console.log("get404: ".concat(err));
+app.use(function (req, res, next) {
   res.render('404', {
     pageTitle: 'Page Not Found',
     path: '/404',

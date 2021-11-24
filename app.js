@@ -7,7 +7,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
-const errorController = require('./controllers/error');
+// const errorController = require('./controllers/error');
 const User = require('./models/user');
 const multer = require('multer');
 const cors = require('cors');
@@ -114,8 +114,7 @@ app.use((error, req, res, next) => {
 })
 
 
-app.use((error, req, res, next) => {
-  console.log(`get404: ${err}`);
+app.use((req, res, next) => {
   res.render('404', { 
       pageTitle: 'Page Not Found', 
       path: '/404',

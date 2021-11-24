@@ -333,16 +333,16 @@ footer{
 
 /* * * * * * * * * * * * * * * * * ERRORS * * * * * * * * * * * * * * * * * */
 .error-main div{
-    background-image: url(../images/retro-embossed-pape.jpg);
-    background-size: cover;
+    /* background-image: url(../images/retro-embossed-pape.jpg);
+    background-size: cover; */
     text-align: center;
-    opacity: .5;
+    /* opacity: .5; */
     width: 100vw;
-    height: 100vh;
+    /* height: 100vh;
     z-index: 0;
     position: fixed;
     top: 0;
-    left: 0;
+    left: 0; */
 }
 
 .error-main h1, .error-main h2{
