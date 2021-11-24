@@ -3,7 +3,7 @@ exports.get404 = (req, res, next, err) => {
   res.render('404', { 
       pageTitle: 'Page Not Found', 
       path: '/404',
-      isAuthenticated: req.session.isLoggedIn });
+      isAuthenticated: false});
   };
   
   exports.get500 = (error, req, res, next) => {
@@ -15,7 +15,7 @@ exports.get404 = (req, res, next, err) => {
     res.render('500', { 
       pageTitle: 'Error', 
       path: '/500',
-      isAuthenticated: req.session.isLoggedIn,
+      isAuthenticated: false,
       user: user
     });
   };
