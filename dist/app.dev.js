@@ -1,5 +1,15 @@
 "use strict";
 
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["get500 ", ""]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
 function _templateObject() {
   var data = _taggedTemplateLiteral(["Multer fileFilter- file accepted: ", ""]);
 
@@ -119,9 +129,32 @@ app.use(function (req, res, next) {
 });
 app.use('/admin', adminRoutes);
 app.use(recipeRoutes);
-app.use(authRoutes);
-app.use(errorController.get500);
-app.use(errorController.get404);
+app.use(authRoutes); // app.use(errorController.get500);
+// app.use(errorController.get404);
+
+app.use(function (error, req, res, next) {
+  console.log(_templateObject2(), error);
+  var user = null;
+
+  if (req.session.isLoggedIn) {
+    user = req.user.name;
+  }
+
+  res.render('500', {
+    pageTitle: 'Error',
+    path: '/500',
+    isAuthenticated: false,
+    user: user
+  }); //or render with status code or anything else.
+});
+app.use(function (error, req, res, next) {
+  console.log("get404: ".concat(err));
+  res.render('404', {
+    pageTitle: 'Page Not Found',
+    path: '/404',
+    isAuthenticated: false
+  });
+});
 var config = {
   autoIndex: false,
   useUnifiedTopology: true,

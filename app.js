@@ -95,9 +95,32 @@ app.use('/admin', adminRoutes);
 app.use(recipeRoutes);
 app.use(authRoutes);
 
-app.use(errorController.get500);
-app.use(errorController.get404);
+// app.use(errorController.get500);
+// app.use(errorController.get404);
 
+app.use((error, req, res, next) => {
+  console.log`get500 ${error}`;
+    let user = null;
+    if(req.session.isLoggedIn){
+      user = req.user.name;
+    }
+    res.render('500', { 
+      pageTitle: 'Error', 
+      path: '/500',
+      isAuthenticated: false,
+      user: user
+    });
+  //or render with status code or anything else.
+})
+
+
+app.use((error, req, res, next) => {
+  console.log(`get404: ${err}`);
+  res.render('404', { 
+      pageTitle: 'Page Not Found', 
+      path: '/404',
+      isAuthenticated: false});
+})
 
 const config = {
     autoIndex: false,
