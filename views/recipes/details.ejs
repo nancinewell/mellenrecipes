@@ -1,0 +1,20 @@
+<%- include('../modules/head.ejs') %>
+</head>
+<body>
+    <%- include('../modules/header.ejs') %>
+    <main class="details-main">
+        <h2><%= recipe.name %></h2>
+        <p id="description"><%= recipe.description %></p>
+        <img src="<% if(recipe.imageUrl){%>/images/<%= recipe.imageUrl %><% } else {%>/images/bonappetit.png<% } %>" alt="Image of <%= recipe.name %>">
+        <div id="ingredients">
+            <h3>Ingredients</h3>
+            <p><%= recipe.ingredients %></p>
+        </div>
+        <div id="directions">
+            <h3>Directions</h3>
+            <p><%= recipe.directions %></p>
+        </div>
+    </main>
+    <%- include('../modules/footer.ejs') %>
+</body>
+</html>

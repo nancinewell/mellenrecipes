@@ -3,9 +3,34 @@
 <body>
     <%- include('../modules/header.ejs') %>
     <main>
-        <p>Display recipes here.</p>
-        
+        <% if (recipes.length > 0) { %>
+            <section class="grid">
+                <% for (let recipe of recipes) { %>
+                        <div class="recipe-card">
+                            <a href='/login' class="favorite-star" title="Log in to mark your favorites!">
+                                <div>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </a>
+                            <a href="/recipe/<%= recipe._id %>" class="recipe-link">
+                                <h2><%= recipe.name %></h2>
+                                <img src="<% 
+                                if(recipe.imageUrl){
+                                    %>/images/<%= recipe.imageUrl %><% 
+                                } else {
+                                    %>/images/bonappetit.png<% 
+                                } %>" alt="Image of <%= recipe.name %>">
+                            </a>
+                        </div>
+                <% } %>
+            </section>
+        <% } else { %>
+            <h1>No Recipes Found!</h1>
+        <% } %>
     </main>
     <%- include('../modules/footer.ejs') %>
 </body>
 </html>
+
+
+    

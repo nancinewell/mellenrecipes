@@ -10,4 +10,44 @@ const router = express.Router();
 
 router.get('/login', authController.getLogin);
 
+router.get('/signup', authController.getSignup);
+
+router.post('/login',[
+    body('email')
+        .isEmail().withMessage('Please enter a valid email')
+        .trim()
+], authController.postLogin);
+
+router.post('/signup',[
+    body('email')
+        .isEmail().withMessage('Please enter a valid email')
+        .trim()
+], authController.postSignup);
+
+router.post('/logout', authController.postLogout);
+
+router.get('/reset', authController.getReset);
+
+router.get('/reset/:token', authController.getNewPassword);
+
+router.post('/reset',[
+    body('email')
+        .isEmail().withMessage('Please enter a valid email')
+        .trim()
+],  authController.postReset);
+
+router.post('/security-questions', authController.postSecurityQuestions);
+
+router.post('/new-password',[
+    body('confirmPassword').custom((value,{req}) => {
+        if(value != req.body.password){
+            throw new Error('Passwords have to match!')
+        }
+        return true;
+    }),
+    body('password', "Passwords must be at least 8 characters long.")
+        .isLength({min: 8})
+], authController.postNewPassword);
+
+
 module.exports = router;

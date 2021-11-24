@@ -1,14 +1,45 @@
 <header>
     <img src="/images/bonappetit.png">
-    <div>
-        <h1>Mellen Family Recipes</h1>
-        <nav>
-            <ul>
-                <li><a href="#">All</a></li>
-                <li><a href="#">Faves</a></li>
-                <li><a href="#">Mine</a></li>
-                <li><a href="#">Search</a></li>
-            </ul>
+    <h1>Mellen Family Recipes</h1>
+    <!-- <nav>
+        <ul>
+            <li><a href="#">All</a></li>
+            <li><a href="#">Faves</a></li>
+            <li><a href="#">Mine</a></li>
+            <li><a href="/admin/add-recipe">Add Recipe</a></li>
+            <li><a href="#">Search</a></li>
+        </ul>
+    </nav>-->
+    <label class="toggle-container" for="toggle">
+        <span class="button-toggle1"></span>
+        <span class="button-toggle2"></span>
+        <span class="button-toggle3"></span>
+    </label>
+    <div class="nav-container">
+
+        <input id="toggle" type="checkbox">
+        
+    
+        <!-- The Nav Menu -->
+        <nav class="nav">
+            <a class="nav-item" href="/">All</a>
+            <a class="nav-item" href="/admin/faves">Faves</a>
+            <a class="nav-item" href="/admin/myrecipes">Mine</a>
+            <a class="nav-item" href="/admin/add-recipe">Add</a>
+            <a class="nav-item" href="/recipes/search">Search</a>
+            <% if (!isAuthenticated) { %>
+                <a class="nav-item <%= path === '/login' ? 'active' : '' %>" href="/login">Login</a>
+                <a class="nav-item <%= path === '/signup' ? 'active' : '' %>" href="/signup">Signup</a>
+        <% } else { %>
+                <form class="nav-item" action="/logout" method="post">
+                    <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                    <button class="logout-button" type="submit">Logout</button>
+                </form>
+            <% } %>
         </nav>
     </div>
+
+
+
+
 </header>

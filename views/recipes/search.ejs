@@ -1,0 +1,17 @@
+<%- include('../modules/head.ejs') %>
+</head>
+<body>
+    <%- include('../modules/header.ejs') %>
+    <main>
+        <form action="/recipes/search" method="post">
+            <fieldset>
+                <legend>Search</legend>
+                <input type=text name="search" placeholder="keyword- could be a name, ingredient, etc">
+                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                <button type="submit">Search</button>
+            </fieldset>
+        </form>
+    </main>
+    <%- include('../modules/footer.ejs') %>
+</body>
+</html>

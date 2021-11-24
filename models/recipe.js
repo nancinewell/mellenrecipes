@@ -7,15 +7,14 @@ const recipeSchema = new Schema({
     type: String,
     required: true
   },
-  ingredients: [
-    {
-      ingredient: {
+  ingredients: {
         type: String,
         required: true
-      },
-      quantity: { type: String, required: true }
-    }
-  ],
+    },
+  directions: {
+    type: String,
+    required: true
+  },
   description: {
     type: String,
     required: false

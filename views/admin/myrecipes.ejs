@@ -1,0 +1,54 @@
+<%- include('../modules/head.ejs') %>
+</head>
+<body>
+    <%- include('../modules/header.ejs') %>
+    <main>
+        <% if (recipes.length > 0) { %>
+            <div class="grid">
+                <% for (let recipe of recipes) { 
+                    let isFavorite = false; 
+                    for( let i=0; i < user.favorites.length; i++){
+                        if(user.favorites[i] == recipe.id){
+                            isFavorite = true;
+                        }
+                    }%>
+                        <div class="recipe-card <%
+                            if(isFavorite){ %>favorite<% } %>">
+                            <a href="<%
+                            if(isFavorite){ %>/admin/remove-favorite/<%= recipe.id %>/index<%
+                            } else { 
+                            %>/admin/add-favorite/<%= recipe.id %>/index<% } %>" class="favorite-star" title="<% if(isFavorite){
+                                %>Remove from Favorites<%
+                            } else { 
+                                %>Add to Favorites<% } %>">
+                            <div>
+                                <% if(isFavorite){ %> 
+                                    <i class="fas fa-star"></i> 
+                                    <% } else { %>
+                                        <i class="far fa-star"></i>
+                                <% } %>
+                            </div>
+                            </a>
+                            <a href="/recipes/<%= recipe.id %>" class="recipe-link">
+                                <h2><%= recipe.name %></h2>
+                                <img src="<% if(recipe.imageUrl){%>/images/<%= recipe.imageUrl %><% } else { %>/images/bonappetit.png<% } %>" alt="Image of <%= recipe.name %>">
+                            </a>
+                            <div class="card-actions">
+                                <a href="/admin/edit-recipe/<%= recipe.id %>?edit=true" class="btn">Edit</a>
+                                <form action="/admin/delete-recipe" method="POST">
+                                    <input class="btn" type="hidden" value="<%= recipe.id %>" name="recipeId">
+                                    <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                                    <button class="btn" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        
+                        </div>
+                <% } %>
+            </div>
+        <% } else { %>
+            <h1>No Recipes Found!</h1>
+        <% } %>
+    </main>
+    <%- include('../modules/footer.ejs') %>
+</body>
+</html>

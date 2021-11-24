@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 4000;
+
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -9,20 +9,37 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
-
-const MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
-
-
+const multer = require('multer');
 const cors = require('cors');
+require('dotenv').config();
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const MONGODB_URI = process.env.MONGODB_URL;
+const PORT = process.env.PORT;
+
 const corsOptions = {
     origin: "https://<your_app_name>.herokuapp.com/",
     optionsSuccessStatus: 200
 };
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'public/images');
+      console.log('Multer Storage - destination set');
+}, filename: (req, file, cb) => {
+      cb(null, Date.now().toString() + file.originalname);
+      console.log(`Multer fileStorage - filename set`);
+}})
 
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'){
+    cb(null, true);
+    console.log`Multer fileFilter- file accepted: ${file}`;
+  } else {
+    cb(null, false);
+    console.log("Multer fileFilter- file not accepted ${file}");
+  }
+}
                         
-
-//const MONGODB_URI = 'mongodb+srv://nodeuser:p1ngpong@cluster0.f2qqp.mongodb.net/mellenrecipes?retryWrites=true&w=majority';
 
 const app = express();
 const store = new MongoDBStore({
@@ -36,14 +53,19 @@ const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 
 const adminRoutes = require('./routes/admin-routes');
 const recipeRoutes = require('./routes/recipe-routes');
 const authRoutes = require('./routes/auth-routes');
-
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: 'triedandtruefamilyrecipes', resave: false, saveUninitialized: false, store: store}));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
+
+
+app.use(session({secret: SESSION_SECRET, resave: false, saveUninitialized: false, store: store}));
 
 app.use(cors(corsOptions));
 app.use(csrfProtection);
@@ -73,6 +95,7 @@ app.use('/admin', adminRoutes);
 app.use(recipeRoutes);
 app.use(authRoutes);
 
+app.use(errorController.get500);
 app.use(errorController.get404);
 
 
@@ -89,6 +112,7 @@ mongoose
     MONGODB_URI, config)
   .then(result => {
     app.listen(PORT);
+    console.log(`Listening on port ${PORT}`);
   })
   .catch(err => {
     console.log(err);

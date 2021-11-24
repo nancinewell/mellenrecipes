@@ -1,0 +1,52 @@
+<%- include('../modules/head.ejs') %>
+</head>
+<body>
+    <%- include('../modules/header.ejs') %>
+<main>
+    <% if(errorMessage){ %>
+        <div class="user-message"><%= errorMessage %></div>
+    <% } %>
+   
+    <form class="recipe-form" action=<% if(editing){ %> '/admin/edit-recipe' <% }else{ %>"/admin/add-recipe" <% } %>method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <legend><% if(editing){ %>Update Recipe<% } else { %> Add A Recipe<% } %></legend>
+            <div class="form-control">
+                <label for="name">Name</label>
+                <input type="text" name="name" placeholder="Recipe Name" value="<% if(editing || hasError){ %><%= recipe.name %><% } %>" 
+                class="<%= validationErrors.find(e => e.param === 'name') ? 'invalid' : ''  %>" >
+            </div>
+            <div class="form-control">
+                <label for="image">Image URL</label>
+                <input type="file" name="image" >
+            </div>
+
+            <div class="form-control">
+                <label for="ingredients">Ingredients</label>
+                <textarea  name="ingredients" placeholder="What ingredients are needed?" rows="5"class="<%= validationErrors.find(e => e.param === 'ingredients') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.ingredients %><% } %></textarea>
+            </div>
+            <div class="form-control">
+                <label for="directions">Directions</label>
+                <textarea  name="directions" placeholder="What directions need to be followed?" rows="5"class="<%= validationErrors.find(e => e.param === 'directions') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.directions %><% } %></textarea>
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea name="description" rows="2" placeholder="Anything you want to say abou the recipe" class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.description %><% } %></textarea>
+            </div>
+            <% if(editing) { %>
+                <input type="hidden" value="<%= recipe._id %>" name="recipeId">
+                <% } %>
+            <div class="add-buttons">
+                <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                <button class="btn" type="submit"><% if(editing) { %> Update <% } else { %> Add Recipe <% } %></button>
+                
+                <% if(!editing) { %>
+                    <input class="btn" type="submit" formaction='/admin/add-another' value="Add Another">
+                <% } %>
+                
+            </div> 
+        </fieldset>
+    </form>
+</main>
+<%- include('../modules/footer.ejs'); %>
+ 
+    
