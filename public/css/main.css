@@ -401,6 +401,7 @@ footer{
     text-align: center;
     height: 100px;
     width: 100%;
+    line-height: 1.75rem;
 }
 .recipe-card img{
     height: 10rem;
