@@ -83,6 +83,10 @@ header{
     align-items:center;
 }
 
+header a{
+    display: flex;
+    flex-wrap: nowrap;
+}
 header img{
     width: 3rem;
     grid-area: logo;
