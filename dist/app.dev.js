@@ -135,7 +135,7 @@ app.use(function (error, req, res, next) {
   console.log(_templateObject2(), error);
   var user = null;
 
-  if (req.session.isLoggedIn) {
+  if (req.session && req.session.isLoggedIn) {
     user = req.user.name;
   }
 

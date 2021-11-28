@@ -101,7 +101,7 @@ app.use(authRoutes);
 app.use((error, req, res, next) => {
   console.log`get500 ${error}`;
     let user = null;
-    if(req.session.isLoggedIn){
+    if(req.session && req.session.isLoggedIn){
       user = req.user.name;
     }
     res.render('500', { 
