@@ -403,7 +403,10 @@ footer{
     width: 100%;
 }
 .recipe-card img{
-    max-height: 10rem;    
+    height: 10rem;
+    width: 10rem;
+    object-fit: cover;
+    border-radius: 100%;
 }
 
 .card-actions{
