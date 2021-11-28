@@ -19,9 +19,11 @@
                 </div>
                 <input type="hidden" value="<%= csrfToken %>" name="_csrf">
                 <button class="btn login-btn" type="submit">Log In</button>
-                <a href='/reset' class='forgot-password'>Forgot Password?</a>        
+                <a href='/reset' class='forgot-password'>Forgot Password?</a>
+                <p>Don't have an account yet? <a href="/signup">Sign up here!</a></p>        
             </fieldset>
         </form>
+        
         
 </main>
 <%- include('../modules/footer.ejs'); %>
