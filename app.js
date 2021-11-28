@@ -64,7 +64,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
-
+app.use(express.cookieParser(SESSION_SECRET));
 app.use(session({secret: SESSION_SECRET, resave: false, saveUninitialized: false, store: store}));
 
 app.use(cors(corsOptions));

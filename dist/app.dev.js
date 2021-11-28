@@ -100,6 +100,7 @@ app.use('/images', express["static"](path.join(__dirname, 'images')));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+app.use(express.cookieParser(SESSION_SECRET));
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
