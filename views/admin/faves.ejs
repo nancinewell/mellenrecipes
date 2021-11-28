@@ -12,8 +12,10 @@
                                 <i class="fas fa-star"></i> 
                             </div>
                         </a>
+                        <a href="/recipes/<%= recipe.id %>" class="recipe-link">
                         <h2><%= recipe.name %></h2>
                         <img src="<% if(recipe.imageUrl){%>/images/<%= recipe.imageUrl %><% } else { %>/images/bonappetit.png<% } %>" alt="Image of <%= recipe.name %>">
+                        </a>
                         <div class="card-actions">
                             <a href="/admin/edit-recipe/<%= recipe.id %>?edit=true" class="btn">Edit</a>
                             <form action="/admin/delete-recipe" method="POST">

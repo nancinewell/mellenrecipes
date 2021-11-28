@@ -453,6 +453,7 @@ footer{
 .details-main img{
     width: 100%;
     padding: 1rem;
+    border-radius: 50%;
 }
 
 .details-main h3{
