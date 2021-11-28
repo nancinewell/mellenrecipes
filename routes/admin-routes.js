@@ -12,6 +12,8 @@ router.get('/add-recipe', isAuth, adminController.getAddRecipe);
 
 router.post('/add-recipe', isAuth, adminController.postAddRecipe);
 
+router.post('/add-another', isAuth, adminController.postAddAnother);
+
 router.post('/edit-recipe', isAuth, adminController.postEditRecipe);
 
 router.get('/edit-recipe/:recipeId', isAuth, adminController.getEditRecipe);

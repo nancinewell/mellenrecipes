@@ -100,8 +100,70 @@ exports.getAddRecipe = (req, res, next) => {
           validationErrors: errors.array()
         })
       });
-    };
+    }
 
+
+    exports.postAddAnother = (req, res, next) => {
+//gather new Recipe info from req
+const name = req.body.name;
+let image = req.file;
+const ingredients = req.body.ingredients;
+const directions = req.body.directions;
+const description = req.body.description
+
+if(!req.file){
+  image = "";
+}
+
+//handle validation errors
+const errors = validationResult(req);
+
+if(!errors.isEmpty()){
+    console.log`${errors.array()}`;
+    return res.status(422).render('admin/edit-recipe', {
+      pageTitle: 'Add Recipe',
+      path: '/admin/add-recipe',
+      editing: false,
+      hasError: true,
+      user: req.user,
+      isAuthenticated: false,
+      errorMessage: errors.array()[0].msg,
+      recipe: {name: name, ingredients: ingredients, description: description},
+      validationErrors: errors.array()
+    })
+  }
+//create new recipe in db
+const recipe = new Recipe({
+  name: name, 
+  ingredients: ingredients, 
+  directions: directions,
+  description: description, 
+  imageUrl: image.filename,
+  userId: req.user
+});
+//Save new recipe.   .save() is native to mongoose. 
+recipe.save()
+  .then(result => {
+    //log success and redirect to admin recipes
+    console.log('Created Recipe');
+
+    res.redirect('/admin/add-recipe');
+  })
+  .catch(err => {
+    console.log(`postAddRecipe err: ${err}`);
+    return res.status(422).render('admin/edit-recipe', {
+      pageTitle: 'Add Recipe',
+      path: '/admin/add-recipe',
+      editing: false,
+      user: req.user,
+      isAuthenticated: false,
+      errorMessage: [],
+      hasError: false,
+      recipe: {name: name, ingredients: ingredients, directions: directions, description: description},
+      validationErrors: errors.array()
+    })
+  });
+    }
 
 // * * * * * * * * * * * * * * GET EDIT RECIPE * * * * * * * * * * * * * *
   exports.getEditRecipe = (req, res, next) => {
