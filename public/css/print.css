@@ -1,0 +1,25 @@
+body{
+    width: 8.5in;
+    padding: 2rem;
+}
+
+div.nav-container{
+    display: none;
+}
+
+header img{
+    width: 5rem;
+    float: left;
+    margin-right: 1rem;
+}
+
+
+.details-main img{
+    float: right;
+    max-width: 20rem;
+    border-radius: 10px;
+}
+
+.details-main p {
+    white-space: pre-line;
+}
