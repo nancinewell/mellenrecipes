@@ -15,6 +15,27 @@
             <h3>Directions</h3>
             <p><%= recipe.directions %></p>
         </div>
+        <% if (addendums.length > 0) { %>
+        <div class="addendum">
+            <h3>Addendums</h3>
+            <% for (let addendum of addendums) { %>
+                <p><em><%= addendum.userId.name %></em><br><%= addendum.addendum %></p>
+                
+            <% } %>
+        </div>
+        <% } %>
+        <div class="add-addendum">
+            <p>Have an addendum for the recipe? <span id="add-span" onclick="showAddendum()">Add it here!</span></p>
+            <form id="add-form" class="hidden" action="/admin/addendum" method="post">
+                <fieldset>
+                    <legend>Addendum</legend>
+                    <textarea name="addendum" placeholder="What changes do you suggest?" rows="5"></textarea>
+                    <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                    <input type="hidden" value="<%= recipe._id %>" name="recipeId">
+                    <button class="btn" type="submit">Submit Addendum</button>
+                </fieldset>
+            </form>
+        </div>
     </main>
     <%- include('../modules/footer.ejs') %>
 </body>

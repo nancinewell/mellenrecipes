@@ -28,6 +28,8 @@ var Recipe = require('../models/recipe');
 
 var User = require('../models/user');
 
+var Addendum = require('../models/addendum');
+
 var _require = require('express-validator'),
     validationResult = _require.validationResult;
 
@@ -466,6 +468,28 @@ exports.postDeleteRecipe = function (req, res, next) {
     var error = new Error(err);
     error.httpStatusCode = 500;
     console.log('postDeleteRecipe catch');
+    return next(error);
+  });
+};
+
+exports.postAddendum = function (req, res, next) {
+  var recipeId = req.body.recipeId;
+  var userId = req.user;
+  var add = req.body.addendum;
+  var addendum = new Addendum({
+    addendum: add,
+    recipeId: recipeId,
+    userId: userId
+  }); //Save new addendum.   .save() is native to mongoose. 
+
+  addendum.save().then(function (results) {
+    console.log("".concat(userId.name, " submitted addendem for ").concat(recipeId));
+    res.redirect("/recipes/".concat(recipeId));
+  })["catch"](function (err) {
+    // res.redirect('/');
+    var error = new Error(err);
+    error.httpStatusCode = 500;
+    console.log('postAddendum catch');
     return next(error);
   });
 }; // exports.getFavorites  = async (req, res, next) => {

@@ -14,6 +14,7 @@
                             </a>
                             <a href="/recipe/<%= recipe._id %>" class="recipe-link">
                                 <h2><%= recipe.name %></h2>
+                                <h3><%= recipe.category %></h3>
                                 <img src="<% 
                                 if(recipe.imageUrl){
                                     %>/images/<%= recipe.imageUrl %><% 

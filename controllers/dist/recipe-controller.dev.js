@@ -14,6 +14,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 var Recipe = require('../models/recipe');
 
+var Addendum = require('../models/addendum');
+
+var mongoose = require('mongoose');
+
 exports.getRecipes = function (req, res, next) {
   Recipe.find().then(function (recipes) {
     console.log(recipes);
@@ -75,23 +79,38 @@ exports.getIndex = function (req, res, next) {
 }; // * * * * * * * * * * * * * * GET RECIPE * * * * * * * * * * * * * *
 
 
-exports.getRecipe = function (req, res, next) {
-  var recipeId = req.params.recipeId;
-  Recipe.findById(recipeId).then(function (recipe) {
-    recipe.ingredients.replace(/\n/g, '<br/>');
-    res.render('recipes/details', {
-      recipe: recipe,
-      pageTitle: 'Mellen Family Recipes',
-      path: '/'
-    });
+exports.getRecipe = function _callee(req, res, next) {
+  var recipeId, addendums;
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          recipeId = req.params.recipeId.toString();
+          _context.next = 3;
+          return regeneratorRuntime.awrap(Addendum.find({
+            recipeId: recipeId
+          }).populate("userId"));
+
+        case 3:
+          addendums = _context.sent;
+          console.log(addendums);
+          Recipe.findById(recipeId).then(function (recipe) {
+            recipe.ingredients.replace(/\n/g, '<br/>');
+            res.render('recipes/details', {
+              recipe: recipe,
+              addendums: addendums,
+              pageTitle: 'Mellen Family Recipes',
+              path: '/'
+            });
+          });
+
+        case 6:
+        case "end":
+          return _context.stop();
+      }
+    }
   });
 }; // * * * * * * * * * * * * * * SEARCH * * * * * * * * * * * * * *
-
-/* * * * * *  * * * *  * * *  * *  * *
-
-THIS IS WHERE I"M WORKING!!!
-
-* * * * * *  * * *  * * * * *  ** * *  */
 
 
 exports.getSearch = function (req, res, next) {

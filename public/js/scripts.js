@@ -44,3 +44,9 @@ function checkNewCategory(){
         }
     }
 }
+
+function showAddendum(){
+    let addendumForm = document.getElementById("add-form")
+
+    visibleClass(addendumForm);
+}

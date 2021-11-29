@@ -26,4 +26,6 @@ router.get('/faves', isAuth, adminController.getFavorites);
 
 router.post('/delete-recipe', adminController.postDeleteRecipe);
 
+router.post('/addendum', isAuth, adminController.postAddendum);
+
 module.exports = router;

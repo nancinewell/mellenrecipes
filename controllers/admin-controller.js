@@ -1,5 +1,6 @@
 const Recipe = require('../models/recipe');
 const User = require('../models/user');
+const Addendum = require('../models/addendum');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const { findById } = require('../models/recipe');
@@ -384,7 +385,31 @@ exports.postDeleteRecipe = (req, res, next) => {
 }
 
 
+exports.postAddendum = (req, res, next) => {
+  const recipeId = req.body.recipeId;
+  const userId = req.user;
+  const add = req.body.addendum;
 
+  const addendum = new Addendum({
+    addendum: add,
+    recipeId: recipeId,
+    userId: userId
+  });
+  //Save new addendum.   .save() is native to mongoose. 
+  addendum.save()
+    .then(results => {
+      console.log(`${userId.name} submitted addendem for ${recipeId}`);
+      res.redirect(`/recipes/${recipeId}`);
+    })
+    .catch(err => {
+      // res.redirect('/');
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      console.log('postAddendum catch');
+      return next(error);
+    });
+
+}
 
 
 

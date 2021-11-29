@@ -66,7 +66,9 @@
             "title title cat"
             "desc desc img"
             "ing ing img"
-            "dir dir dir";
+            "dir dir dir"
+            "add add add"
+            "addAdd addAdd addAdd";
 
     }
 
@@ -95,7 +97,13 @@
         grid-area: dir;
     }
 
-    
+    .details-main .addendum{
+        grid-area: add;
+    }
+
+    .details-main .add-addendum{
+        grid-area: addAdd;
+    }
     
     /* * * * * * * * DON'T DELETE THIS ONE!!!! MEDIA QUERY * * * * * * */
 }

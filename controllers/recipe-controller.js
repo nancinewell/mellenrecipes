@@ -1,4 +1,6 @@
 const Recipe = require('../models/recipe');
+const Addendum = require('../models/addendum');
+const mongoose = require('mongoose');
 
 exports.getRecipes = (req, res, next) => {
     Recipe.find()
@@ -70,27 +72,25 @@ exports.getRecipes = (req, res, next) => {
   };
 
   // * * * * * * * * * * * * * * GET RECIPE * * * * * * * * * * * * * *
-  exports.getRecipe = (req, res, next) => {
-    const recipeId = req.params.recipeId;
-
+  exports.getRecipe = async (req, res, next) => {
+    const recipeId = req.params.recipeId.toString();
+    
+    const addendums = await Addendum.find({recipeId: recipeId}).populate("userId");
+    console.log(addendums);
     Recipe.findById(recipeId)
       .then(recipe => {
         recipe.ingredients.replace(/\n/g, '<br/>');
         res.render('recipes/details', {
           recipe: recipe,
+          addendums: addendums,
           pageTitle: 'Mellen Family Recipes',
           path: '/'
         })
       })
-  }
+    }
 
 // * * * * * * * * * * * * * * SEARCH * * * * * * * * * * * * * *
 
-/* * * * * *  * * * *  * * *  * *  * *
-
-THIS IS WHERE I"M WORKING!!!
-
-* * * * * *  * * *  * * * * *  ** * *  */
 exports.getSearch = (req, res, next) => {
   res.render('recipes/search', {
     pageTitle: 'Search',

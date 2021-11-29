@@ -16,25 +16,29 @@
                             if(isFavorite){
                                 %>favorite<%
                             }%>">
-                            <a href="<%
-                            if(isFavorite){
-                                %>/admin/remove-favorite/<%= recipe.id %>/index<%
-                            } else { 
-                                %>/admin/add-favorite/<%= recipe.id %>/index<% } %>" class="favorite-star" title="<%
+                            <div class="recipe-card-top">
+                                <h3><%= recipe.category %></h3>
+                                <a href="<%
                                 if(isFavorite){
-                                    %>Remove from Favorites<%
+                                    %>/admin/remove-favorite/<%= recipe.id %>/index<%
                                 } else { 
-                                    %>Add to Favorites<% } %>">
-                                <div>
-                                <% if(isFavorite){ %> 
-                                    <i class="fas fa-star"></i> 
-                                    <% } else { %>
-                                        <i class="far fa-star"></i>
-                                <% } %>
-                                </div>
-                            </a>
+                                    %>/admin/add-favorite/<%= recipe.id %>/index<% } %>" class="favorite-star" title="<%
+                                    if(isFavorite){
+                                        %>Remove from Favorites<%
+                                    } else { 
+                                        %>Add to Favorites<% } %>">
+                                    <div>
+                                    <% if(isFavorite){ %> 
+                                        <i class="fas fa-star"></i> 
+                                        <% } else { %>
+                                            <i class="far fa-star"></i>
+                                    <% } %>
+                                    </div>
+                                </a>
+                            </div>
                             <a href="/recipes/<%= recipe.id %>" class="recipe-link">
                                 <h2><%= recipe.name %></h2>
+                                
                                 <img src="<% 
                                 if(recipe.imageUrl){
                                     %>/images/<%= recipe.imageUrl %><% 
