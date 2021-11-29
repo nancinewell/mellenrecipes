@@ -63,7 +63,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-areas: 
-            "title title title"
+            "title title cat"
             "desc desc img"
             "ing ing img"
             "dir dir dir";
@@ -72,6 +72,10 @@
 
     .details-main h2{
         grid-area: title;
+    }
+    .details-main h3{
+        grid-area: cat;
+        justify-self: center;
     }
 
     .details-main #description{
@@ -91,9 +95,7 @@
         grid-area: dir;
     }
 
-    .details-main p { 
-        white-space: pre-line; 
-    }
+    
     
     /* * * * * * * * DON'T DELETE THIS ONE!!!! MEDIA QUERY * * * * * * */
 }

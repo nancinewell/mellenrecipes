@@ -463,3 +463,14 @@ footer{
 .details-main h3{
     padding: 1rem 0 0rem;
 }
+
+.details-main p { 
+    white-space: pre-line; 
+}
+
+
+
+
+.hidden {
+    display: none;
+}

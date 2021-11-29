@@ -3,7 +3,7 @@ const User = require('../models/user');
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const { findById } = require('../models/recipe');
-
+let allCategories = [];
 // * * * * * * * * * * * * * * GET RECIPES * * * * * * * * * * * * * *
 exports.getRecipes = (req, res, next) => {
   //get all recipes from db
@@ -26,18 +26,28 @@ exports.getRecipes = (req, res, next) => {
 };
 
 // * * * * * * * * * * * * * * GET ADD RECIPE * * * * * * * * * * * * * *
-exports.getAddRecipe = (req, res, next) => {
+exports.getAddRecipe = async (req, res, next) => {
+  await getCategories();
     res.render('admin/edit-recipe', {
       pageTitle: 'Add Recipe',
       path: '/admin/add-recipe',
       editing: false,
-      //isAuthenticated: req.session.isLoggedIn,
+      isAuthenticated: req.session.isLoggedIn,
+      categories: allCategories,
       hasError: false,
       errorMessage: null,
       validationErrors: []
       //or isAuthenticated: req.session.user;
     });
   };
+
+  async function getCategories(){
+    await Recipe.find().distinct("category")
+      .then(categories => {
+        allCategories = categories;
+        allCategories.sort();
+      })
+  }
 
 // * * * * * * * * * * * * * * POST ADD RECIPE * * * * * * * * * * * * * *
   exports.postAddRecipe = (req, res, next) => {
@@ -46,8 +56,14 @@ exports.getAddRecipe = (req, res, next) => {
     let image = req.file;
     const ingredients = req.body.ingredients;
     const directions = req.body.directions;
-    const description = req.body.description
-    
+    const description = req.body.description;
+    let category = req.body.category;
+    const newCategory = req.body.newCategory;
+
+    if(category == "newCategory"){
+      category = newCategory;
+    }
+
     if(!req.file){
       image = "";
     }
@@ -76,6 +92,7 @@ exports.getAddRecipe = (req, res, next) => {
       directions: directions,
       description: description, 
       imageUrl: image.filename,
+      category: category,
       userId: req.user
     });
     //Save new recipe.   .save() is native to mongoose. 
@@ -110,9 +127,14 @@ let image = req.file;
 const ingredients = req.body.ingredients;
 const directions = req.body.directions;
 const description = req.body.description
-
+const category = req.body.category;
+const newCategory = req.body.newCategory;
 if(!req.file){
   image = "";
+}
+
+if(category == "newCategory"){
+  category = newCategory;
 }
 
 //handle validation errors
@@ -137,7 +159,8 @@ const recipe = new Recipe({
   name: name, 
   ingredients: ingredients, 
   directions: directions,
-  description: description, 
+  description: description,
+  category: category, 
   imageUrl: image.filename,
   userId: req.user
 });
@@ -166,7 +189,10 @@ recipe.save()
     }
 
 // * * * * * * * * * * * * * * GET EDIT RECIPE * * * * * * * * * * * * * *
-  exports.getEditRecipe = (req, res, next) => {
+  exports.getEditRecipe = async (req, res, next) => {
+  //get categories
+    await getCategories();
+    
     //Is the user in edit mode? Only allow access if in edit mode.
     const editMode = req.query.edit;
     
@@ -174,6 +200,8 @@ recipe.save()
     if(!editMode){
       return res.redirect('/');
     }
+
+    
 
     //gather recipe id from params and locate recipe 
     const recipeId = req.params.recipeId;
@@ -191,6 +219,7 @@ recipe.save()
           recipe: recipe,
           hasError: false,
           user: req.user,
+          categories: allCategories,
           errorMessage: "",
           validationErrors: []
         });
@@ -211,7 +240,13 @@ exports.postEditRecipe = (req, res, next) => {
   const updatedIngredients = req.body.ingredients;
   const updatedDirections = req.body.directions;
   const updatedDescription = req.body.description;
+  let updatedCategory = req.body.category;
   const recipeId = req.body.recipeId;
+    const newCategory = req.body.newCategory;
+    
+    if(updatedCategory == "newCategory"){
+      updatedCategory = newCategory;
+    }
   
   if(!req.file){
     image = "";
@@ -231,6 +266,7 @@ exports.postEditRecipe = (req, res, next) => {
       recipe.ingredients = updatedIngredients;
       recipe.description = updatedDescription;
       recipe.directions = updatedDirections;
+      recipe.category = updatedCategory;
       if(image){
         recipe.imageUrl = image.filename;
       }

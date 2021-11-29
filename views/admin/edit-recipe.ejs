@@ -19,7 +19,19 @@
                 <label for="image">Image URL</label>
                 <input type="file" name="image" >
             </div>
-
+            <div class="form-control">
+                <label for="category">Category</label>
+                <select name="category" id="category" onclick="showNewCategory()">
+                    <option selected disabled>Select</option>
+                    <% for( let category of categories ){ %>
+                        <option name="category" <% if(editing){
+                            if(recipe.category == category){%> selected <% }} %>
+                        value="<%= category %>"><%= category %></option>
+                    <% } %>
+                    <option name="category" value="newCategory">New</option>
+                </select>
+                <input type="text" id="new-category" name="newCategory" onblur="checkNewCategory()" placeholder="New Category Name" class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : ''  %> hidden">
+            </div>
             <div class="form-control">
                 <label for="ingredients">Ingredients</label>
                 <textarea  name="ingredients" placeholder="What ingredients are needed?" rows="5"class="<%= validationErrors.find(e => e.param === 'ingredients') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.ingredients %><% } %></textarea>

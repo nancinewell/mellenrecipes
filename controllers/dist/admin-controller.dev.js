@@ -10,6 +10,8 @@ function _templateObject2() {
   return data;
 }
 
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 function _templateObject() {
   var data = _taggedTemplateLiteral(["", ""]);
 
@@ -32,8 +34,9 @@ var _require = require('express-validator'),
 var mongoose = require('mongoose');
 
 var _require2 = require('../models/recipe'),
-    findById = _require2.findById; // * * * * * * * * * * * * * * GET RECIPES * * * * * * * * * * * * * *
+    findById = _require2.findById;
 
+var allCategories = []; // * * * * * * * * * * * * * * GET RECIPES * * * * * * * * * * * * * *
 
 exports.getRecipes = function (req, res, next) {
   //get all recipes from db
@@ -56,18 +59,53 @@ exports.getRecipes = function (req, res, next) {
 }; // * * * * * * * * * * * * * * GET ADD RECIPE * * * * * * * * * * * * * *
 
 
-exports.getAddRecipe = function (req, res, next) {
-  res.render('admin/edit-recipe', {
-    pageTitle: 'Add Recipe',
-    path: '/admin/add-recipe',
-    editing: false,
-    //isAuthenticated: req.session.isLoggedIn,
-    hasError: false,
-    errorMessage: null,
-    validationErrors: [] //or isAuthenticated: req.session.user;
+exports.getAddRecipe = function _callee(req, res, next) {
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return regeneratorRuntime.awrap(getCategories());
 
+        case 2:
+          res.render('admin/edit-recipe', {
+            pageTitle: 'Add Recipe',
+            path: '/admin/add-recipe',
+            editing: false,
+            isAuthenticated: req.session.isLoggedIn,
+            categories: allCategories,
+            hasError: false,
+            errorMessage: null,
+            validationErrors: [] //or isAuthenticated: req.session.user;
+
+          });
+
+        case 3:
+        case "end":
+          return _context.stop();
+      }
+    }
   });
-}; // * * * * * * * * * * * * * * POST ADD RECIPE * * * * * * * * * * * * * *
+};
+
+function getCategories() {
+  return regeneratorRuntime.async(function getCategories$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return regeneratorRuntime.awrap(Recipe.find().distinct("category").then(function (categories) {
+            allCategories = categories;
+            allCategories.sort();
+          }));
+
+        case 2:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+} // * * * * * * * * * * * * * * POST ADD RECIPE * * * * * * * * * * * * * *
 
 
 exports.postAddRecipe = function (req, res, next) {
@@ -77,6 +115,12 @@ exports.postAddRecipe = function (req, res, next) {
   var ingredients = req.body.ingredients;
   var directions = req.body.directions;
   var description = req.body.description;
+  var category = req.body.category;
+  var newCategory = req.body.newCategory;
+
+  if (category == "newCategory") {
+    category = newCategory;
+  }
 
   if (!req.file) {
     image = "";
@@ -111,6 +155,7 @@ exports.postAddRecipe = function (req, res, next) {
     directions: directions,
     description: description,
     imageUrl: image.filename,
+    category: category,
     userId: req.user
   }); //Save new recipe.   .save() is native to mongoose. 
 
@@ -146,9 +191,15 @@ exports.postAddAnother = function (req, res, next) {
   var ingredients = req.body.ingredients;
   var directions = req.body.directions;
   var description = req.body.description;
+  var category = req.body.category;
+  var newCategory = req.body.newCategory;
 
   if (!req.file) {
     image = "";
+  }
+
+  if (category == "newCategory") {
+    category = (_readOnlyError("category"), newCategory);
   } //handle validation errors
 
 
@@ -179,6 +230,7 @@ exports.postAddAnother = function (req, res, next) {
     ingredients: ingredients,
     directions: directions,
     description: description,
+    category: category,
     imageUrl: image.filename,
     userId: req.user
   }); //Save new recipe.   .save() is native to mongoose. 
@@ -209,38 +261,59 @@ exports.postAddAnother = function (req, res, next) {
 }; // * * * * * * * * * * * * * * GET EDIT RECIPE * * * * * * * * * * * * * *
 
 
-exports.getEditRecipe = function (req, res, next) {
-  //Is the user in edit mode? Only allow access if in edit mode.
-  var editMode = req.query.edit; //if not in edit mode, redirect Home
+exports.getEditRecipe = function _callee2(req, res, next) {
+  var editMode, recipeId;
+  return regeneratorRuntime.async(function _callee2$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(getCategories());
 
-  if (!editMode) {
-    return res.redirect('/');
-  } //gather recipe id from params and locate recipe 
+        case 2:
+          //Is the user in edit mode? Only allow access if in edit mode.
+          editMode = req.query.edit; //if not in edit mode, redirect Home
+
+          if (editMode) {
+            _context3.next = 5;
+            break;
+          }
+
+          return _context3.abrupt("return", res.redirect('/'));
+
+        case 5:
+          //gather recipe id from params and locate recipe 
+          recipeId = req.params.recipeId;
+          Recipe.findById(recipeId).then(function (recipe) {
+            //if no recipe, redirect Home
+            if (!recipe) {
+              return res.redirect('/');
+            } //if recipe found, send to edit recipe with recipe info
 
 
-  var recipeId = req.params.recipeId;
-  Recipe.findById(recipeId).then(function (recipe) {
-    //if no recipe, redirect Home
-    if (!recipe) {
-      return res.redirect('/');
-    } //if recipe found, send to edit recipe with recipe info
+            res.render('admin/edit-recipe', {
+              pageTitle: 'Edit recipe',
+              path: '/admin/edit-recipe',
+              editing: editMode,
+              recipe: recipe,
+              hasError: false,
+              user: req.user,
+              categories: allCategories,
+              errorMessage: "",
+              validationErrors: []
+            });
+          })["catch"](function (err) {
+            var error = new Error(err);
+            error.httpStatusCode = 500;
+            console.log('admin-controller 131');
+            return next(error);
+          });
 
-
-    res.render('admin/edit-recipe', {
-      pageTitle: 'Edit recipe',
-      path: '/admin/edit-recipe',
-      editing: editMode,
-      recipe: recipe,
-      hasError: false,
-      user: req.user,
-      errorMessage: "",
-      validationErrors: []
-    });
-  })["catch"](function (err) {
-    var error = new Error(err);
-    error.httpStatusCode = 500;
-    console.log('admin-controller 131');
-    return next(error);
+        case 7:
+        case "end":
+          return _context3.stop();
+      }
+    }
   });
 }; // * * * * * * * * * * * * * * POST EDIT RECIPE * * * * * * * * * * * * * *
 
@@ -252,7 +325,13 @@ exports.postEditRecipe = function (req, res, next) {
   var updatedIngredients = req.body.ingredients;
   var updatedDirections = req.body.directions;
   var updatedDescription = req.body.description;
+  var updatedCategory = req.body.category;
   var recipeId = req.body.recipeId;
+  var newCategory = req.body.newCategory;
+
+  if (updatedCategory == "newCategory") {
+    updatedCategory = newCategory;
+  }
 
   if (!req.file) {
     image = "";
@@ -273,6 +352,7 @@ exports.postEditRecipe = function (req, res, next) {
     recipe.ingredients = updatedIngredients;
     recipe.description = updatedDescription;
     recipe.directions = updatedDirections;
+    recipe.category = updatedCategory;
 
     if (image) {
       recipe.imageUrl = image.filename;
@@ -347,11 +427,11 @@ exports.getRemoveFavorite = function (req, res, next) {
   });
 };
 
-exports.getFavorites = function _callee(req, res, next) {
+exports.getFavorites = function _callee3(req, res, next) {
   var user;
-  return regeneratorRuntime.async(function _callee$(_context) {
+  return regeneratorRuntime.async(function _callee3$(_context4) {
     while (1) {
-      switch (_context.prev = _context.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
           user = req.user;
           User.findById(user).populate("favorites").then(function (result) {
@@ -365,7 +445,7 @@ exports.getFavorites = function _callee(req, res, next) {
 
         case 2:
         case "end":
-          return _context.stop();
+          return _context4.stop();
       }
     }
   });

@@ -4,6 +4,7 @@
     <%- include('../modules/header.ejs') %>
     <main class="details-main">
         <h2><%= recipe.name %></h2>
+        <h3><%= recipe.category %></h3>
         <p id="description"><%= recipe.description %></p>
         <img src="<% if(recipe.imageUrl){%>/images/<%= recipe.imageUrl %><% } else {%>/images/bonappetit.png<% } %>" alt="Image of <%= recipe.name %>">
         <div id="ingredients">
