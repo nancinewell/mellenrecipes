@@ -42,7 +42,7 @@
             </div>
             <div class="form-control">
                 <label for="description">Description</label>
-                <textarea name="description" rows="2" placeholder="Anything you want to say abou the recipe" class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.description %><% } %></textarea>
+                <textarea name="description" rows="2" placeholder="Anything you want to say about the recipe" class="<%= validationErrors.find(e => e.param === 'description') ? 'invalid' : ''  %>"><% if(editing || hasError){ %><%= recipe.description %><% } %></textarea>
             </div>
             <% if(editing) { %>
                 <input type="hidden" value="<%= recipe._id %>" name="recipeId">

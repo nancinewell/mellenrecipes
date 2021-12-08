@@ -3,7 +3,7 @@ const Addendum = require('../models/addendum');
 const mongoose = require('mongoose');
 
 exports.getRecipes = (req, res, next) => {
-    Recipe.find()
+    Recipe.find().sort('category')
       .then(recipes => {
         console.log(recipes);
         res.render('recipes', {
@@ -37,7 +37,7 @@ exports.getRecipes = (req, res, next) => {
   exports.getIndex = (req, res, next) => {
     //get all products from db and render in index
     if(!req.user){
-      Recipe.find()
+      Recipe.find().sort('category')
       .then(recipes => {
         res.render('recipes/index', {
           recipes: recipes,
@@ -52,7 +52,7 @@ exports.getRecipes = (req, res, next) => {
         return next(error);
       });
     } else {
-      Recipe.find()
+      Recipe.find().sort('category')
       .then(recipes => {
         res.render('recipes/index-user', {
           recipes: recipes,
@@ -77,7 +77,7 @@ exports.getRecipes = (req, res, next) => {
     
     const addendums = await Addendum.find({recipeId: recipeId}).populate("userId");
     console.log(addendums);
-    Recipe.findById(recipeId)
+    Recipe.findById(recipeId).sort('category')
       .then(recipe => {
         recipe.ingredients.replace(/\n/g, '<br/>');
         res.render('recipes/details', {
@@ -109,7 +109,7 @@ exports.postSearch = (req, res, next) => {
       {"directions":{ $regex: '.*'+search+'.*', $options: 'i' } },
       {"description": { $regex: '.*'+search+'.*', $options: 'i' } }
     ]
-  })
+  }).sort('category')
   .then(recipes => {
     console.log`Search Results: ${recipes}`;
     if(!req.user){

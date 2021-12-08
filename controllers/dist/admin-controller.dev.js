@@ -10,8 +10,6 @@ function _templateObject2() {
   return data;
 }
 
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function _templateObject() {
   var data = _taggedTemplateLiteral(["", ""]);
 
@@ -44,7 +42,7 @@ exports.getRecipes = function (req, res, next) {
   //get all recipes from db
   Recipe.find({
     userId: req.user._id
-  }).then(function (recipes) {
+  }).sort('category').then(function (recipes) {
     //render the page using those recipes
     res.render('admin/myrecipes', {
       recipes: recipes,
@@ -201,7 +199,7 @@ exports.postAddAnother = function (req, res, next) {
   }
 
   if (category == "newCategory") {
-    category = (_readOnlyError("category"), newCategory);
+    category = newCategory;
   } //handle validation errors
 
 
@@ -437,8 +435,69 @@ exports.getFavorites = function _callee3(req, res, next) {
         case 0:
           user = req.user;
           User.findById(user).populate("favorites").then(function (result) {
+            var favoriteArray = [];
+            var categoriesArray = [];
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = result.favorites[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                favorite = _step.value;
+
+                if (!categoriesArray.includes(favorite.category)) {
+                  categoriesArray.push(favorite.category);
+                }
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                  _iterator["return"]();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+
+            categoriesArray.sort();
+
+            for (var _i = 0, _categoriesArray = categoriesArray; _i < _categoriesArray.length; _i++) {
+              category = _categoriesArray[_i];
+              var _iteratorNormalCompletion2 = true;
+              var _didIteratorError2 = false;
+              var _iteratorError2 = undefined;
+
+              try {
+                for (var _iterator2 = result.favorites[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                  favorite = _step2.value;
+
+                  if (favorite.category == category) {
+                    favoriteArray.push(favorite);
+                  }
+                }
+              } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+              } finally {
+                try {
+                  if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                    _iterator2["return"]();
+                  }
+                } finally {
+                  if (_didIteratorError2) {
+                    throw _iteratorError2;
+                  }
+                }
+              }
+            }
+
             res.render('admin/faves', {
-              recipes: result.favorites,
+              recipes: favoriteArray,
               pageTitle: 'My Favorite Recipes',
               path: '/admin/faves',
               user: req.user

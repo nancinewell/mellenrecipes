@@ -19,7 +19,7 @@ var Addendum = require('../models/addendum');
 var mongoose = require('mongoose');
 
 exports.getRecipes = function (req, res, next) {
-  Recipe.find().then(function (recipes) {
+  Recipe.find().sort('category').then(function (recipes) {
     console.log(recipes);
     res.render('recipes', {
       recipes: recipes,
@@ -49,7 +49,7 @@ exports.getRecipes = function (req, res, next) {
 exports.getIndex = function (req, res, next) {
   //get all products from db and render in index
   if (!req.user) {
-    Recipe.find().then(function (recipes) {
+    Recipe.find().sort('category').then(function (recipes) {
       res.render('recipes/index', {
         recipes: recipes,
         pageTitle: 'Mellen Family Recipes',
@@ -62,7 +62,7 @@ exports.getIndex = function (req, res, next) {
       return next(error);
     });
   } else {
-    Recipe.find().then(function (recipes) {
+    Recipe.find().sort('category').then(function (recipes) {
       res.render('recipes/index-user', {
         recipes: recipes,
         pageTitle: 'Mellen Family Recipes',
@@ -94,7 +94,7 @@ exports.getRecipe = function _callee(req, res, next) {
         case 3:
           addendums = _context.sent;
           console.log(addendums);
-          Recipe.findById(recipeId).then(function (recipe) {
+          Recipe.findById(recipeId).sort('category').then(function (recipe) {
             recipe.ingredients.replace(/\n/g, '<br/>');
             res.render('recipes/details', {
               recipe: recipe,
@@ -145,7 +145,7 @@ exports.postSearch = function (req, res, next) {
         $options: 'i'
       }
     }]
-  }).then(function (recipes) {
+  }).sort('category').then(function (recipes) {
     console.log(_templateObject(), recipes);
 
     if (!req.user) {

@@ -7,11 +7,14 @@
             <div class="grid">
                 <% for (let recipe of recipes) { %>
                     <div class="recipe-card favorite">
-                        <a href="/admin/favorite/<%= recipe.id %>/faves" class="favorite-star" title="Remove from Favorites">
-                            <div>
-                                <i class="fas fa-star"></i> 
-                            </div>
-                        </a>
+                        <div class="recipe-card-top">
+                            <h3><%= recipe.category %></h3>
+                            <a href="/admin/favorite/<%= recipe.id %>/faves" class="favorite-star" title="Remove from Favorites">
+                                <div>
+                                    <i class="fas fa-star"></i> 
+                                </div>
+                            </a>
+                        </div>
                         <a href="/recipes/<%= recipe.id %>" class="recipe-link">
                         <h2><%= recipe.name %></h2>
                         <img src="<% if(recipe.imageUrl){%>/images/<%= recipe.imageUrl %><% } else { %>/images/bonappetit.png<% } %>" alt="Image of <%= recipe.name %>">

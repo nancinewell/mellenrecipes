@@ -8,7 +8,7 @@ let allCategories = [];
 // * * * * * * * * * * * * * * GET RECIPES * * * * * * * * * * * * * *
 exports.getRecipes = (req, res, next) => {
   //get all recipes from db
-  Recipe.find({userId: req.user._id})
+  Recipe.find({userId: req.user._id}).sort('category')
     .then(recipes => {
       //render the page using those recipes
       res.render('admin/myrecipes', {
@@ -128,7 +128,7 @@ let image = req.file;
 const ingredients = req.body.ingredients;
 const directions = req.body.directions;
 const description = req.body.description
-const category = req.body.category;
+let category = req.body.category;
 const newCategory = req.body.newCategory;
 if(!req.file){
   image = "";
@@ -355,8 +355,25 @@ exports.getFavorites = async (req, res, next) => {
   User.findById(user)
     .populate("favorites")
     .then(result => {
+      let favoriteArray = [];
+      let categoriesArray = [];
+
+      for(favorite of result.favorites){
+        if(!categoriesArray.includes(favorite.category)){
+          categoriesArray.push(favorite.category)
+        }
+      }
+      categoriesArray.sort();
+      for(category of categoriesArray){
+        for(favorite of result.favorites){
+          if(favorite.category == category){
+            favoriteArray.push(favorite);
+          }
+        }
+      }
+            
       res.render('admin/faves', {
-            recipes: result.favorites,
+            recipes: favoriteArray,
             pageTitle: 'My Favorite Recipes',
             path: '/admin/faves',
             user: req.user
