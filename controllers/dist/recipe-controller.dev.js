@@ -142,6 +142,11 @@ exports.postSearch = function (req, res, next) {
         $options: 'i'
       }
     }, {
+      "category": {
+        $regex: '.*' + search + '.*',
+        $options: 'i'
+      }
+    }, {
       "description": {
         $regex: '.*' + search + '.*',
         $options: 'i'
