@@ -86,13 +86,15 @@ exports.getRecipe = function _callee(req, res, next) {
       switch (_context.prev = _context.next) {
         case 0:
           recipeId = req.params.recipeId.toString();
-          _context.next = 3;
+          console.log("getRecipe - pre-actions");
+          _context.next = 4;
           return regeneratorRuntime.awrap(Addendum.find({
             recipeId: recipeId
           }).populate("userId"));
 
-        case 3:
+        case 4:
           addendums = _context.sent;
+          console.log("getRecipe - addendums retrieved");
           console.log(addendums);
           Recipe.findById(recipeId).sort('category').then(function (recipe) {
             recipe.ingredients.replace(/\n/g, '<br/>');
@@ -104,7 +106,7 @@ exports.getRecipe = function _callee(req, res, next) {
             });
           });
 
-        case 6:
+        case 8:
         case "end":
           return _context.stop();
       }

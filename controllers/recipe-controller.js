@@ -74,8 +74,9 @@ exports.getRecipes = (req, res, next) => {
   // * * * * * * * * * * * * * * GET RECIPE * * * * * * * * * * * * * *
   exports.getRecipe = async (req, res, next) => {
     const recipeId = req.params.recipeId.toString();
-    
+    console.log(`getRecipe - pre-actions`);
     const addendums = await Addendum.find({recipeId: recipeId}).populate("userId");
+    console.log(`getRecipe - addendums retrieved`);
     console.log(addendums);
     Recipe.findById(recipeId).sort('category')
       .then(recipe => {
