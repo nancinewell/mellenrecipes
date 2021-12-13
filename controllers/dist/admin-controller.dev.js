@@ -42,7 +42,10 @@ exports.getRecipes = function (req, res, next) {
   //get all recipes from db
   Recipe.find({
     userId: req.user._id
-  }).sort('category').then(function (recipes) {
+  }).sort({
+    "category": 1,
+    "name": 1
+  }).then(function (recipes) {
     //render the page using those recipes
     res.render('admin/myrecipes', {
       recipes: recipes,

@@ -37,7 +37,7 @@ exports.getRecipes = (req, res, next) => {
   exports.getIndex = (req, res, next) => {
     //get all products from db and render in index
     if(!req.user){
-      Recipe.find().sort('category')
+      Recipe.find().sort({"category": -1, "name": 1})
       .then(recipes => {
         res.render('recipes/index', {
           recipes: recipes,
@@ -52,7 +52,7 @@ exports.getRecipes = (req, res, next) => {
         return next(error);
       });
     } else {
-      Recipe.find().sort('category')
+      Recipe.find().sort({"category": 1, "name": 1})
       .then(recipes => {
         res.render('recipes/index-user', {
           recipes: recipes,
@@ -78,7 +78,7 @@ exports.getRecipes = (req, res, next) => {
     const addendums = await Addendum.find({recipeId: recipeId}).populate("userId");
     console.log(`getRecipe - addendums retrieved`);
     console.log(addendums);
-    Recipe.findById(recipeId).sort('category')
+    Recipe.findById(recipeId).sort({"category": 1, "name": 1})
       .then(recipe => {
         recipe.ingredients.replace(/\n/g, '<br/>');
         res.render('recipes/details', {
@@ -111,7 +111,7 @@ exports.postSearch = (req, res, next) => {
       {"category":{ $regex: '.*'+search+'.*', $options: 'i' } },
       {"description": { $regex: '.*'+search+'.*', $options: 'i' } }
     ]
-  }).sort('category')
+  }).sort({"category": 1, "name": 1})
   .then(recipes => {
     console.log`Search Results: ${recipes}`;
     if(!req.user){

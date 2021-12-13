@@ -49,7 +49,10 @@ exports.getRecipes = function (req, res, next) {
 exports.getIndex = function (req, res, next) {
   //get all products from db and render in index
   if (!req.user) {
-    Recipe.find().sort('category').then(function (recipes) {
+    Recipe.find().sort({
+      "category": -1,
+      "name": 1
+    }).then(function (recipes) {
       res.render('recipes/index', {
         recipes: recipes,
         pageTitle: 'Mellen Family Recipes',
@@ -62,7 +65,10 @@ exports.getIndex = function (req, res, next) {
       return next(error);
     });
   } else {
-    Recipe.find().sort('category').then(function (recipes) {
+    Recipe.find().sort({
+      "category": 1,
+      "name": 1
+    }).then(function (recipes) {
       res.render('recipes/index-user', {
         recipes: recipes,
         pageTitle: 'Mellen Family Recipes',
@@ -96,7 +102,10 @@ exports.getRecipe = function _callee(req, res, next) {
           addendums = _context.sent;
           console.log("getRecipe - addendums retrieved");
           console.log(addendums);
-          Recipe.findById(recipeId).sort('category').then(function (recipe) {
+          Recipe.findById(recipeId).sort({
+            "category": 1,
+            "name": 1
+          }).then(function (recipe) {
             recipe.ingredients.replace(/\n/g, '<br/>');
             res.render('recipes/details', {
               recipe: recipe,
@@ -152,7 +161,10 @@ exports.postSearch = function (req, res, next) {
         $options: 'i'
       }
     }]
-  }).sort('category').then(function (recipes) {
+  }).sort({
+    "category": 1,
+    "name": 1
+  }).then(function (recipes) {
     console.log(_templateObject(), recipes);
 
     if (!req.user) {

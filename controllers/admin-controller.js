@@ -8,7 +8,7 @@ let allCategories = [];
 // * * * * * * * * * * * * * * GET RECIPES * * * * * * * * * * * * * *
 exports.getRecipes = (req, res, next) => {
   //get all recipes from db
-  Recipe.find({userId: req.user._id}).sort('category')
+  Recipe.find({userId: req.user._id}).sort({"category": 1, "name": 1})
     .then(recipes => {
       //render the page using those recipes
       res.render('admin/myrecipes', {
