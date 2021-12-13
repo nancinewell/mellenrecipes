@@ -496,3 +496,8 @@ footer{
 .hidden {
     display: none;
 }
+
+.user-message{
+    text-align: center;
+    font-weight: bold;
+}

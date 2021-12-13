@@ -18,7 +18,33 @@ var isAuth = require('../middleware/is-auth');
 var router = express.Router();
 router.get('/myrecipes', isAuth, adminController.getRecipes);
 router.get('/add-recipe', isAuth, adminController.getAddRecipe);
-router.post('/add-recipe', isAuth, adminController.postAddRecipe);
+router.post('/add-recipe', isAuth, [check('category').custom(function (value, _ref) {
+  var req = _ref.req;
+
+  if (!value) {
+    throw new Error("Please select a category for this recipe.");
+  }
+
+  return true;
+}), check('name').custom(function (value, _ref2) {
+  var req = _ref2.req;
+
+  if (!value) {
+    throw new Error("Please give this recipe a name.");
+  }
+}), check('ingredients').custom(function (value, _ref3) {
+  var req = _ref3.req;
+
+  if (!value) {
+    throw new Error("Please list the ingredients used in this recipe.");
+  }
+}), check('directions').custom(function (value, _ref4) {
+  var req = _ref4.req;
+
+  if (!value) {
+    throw new Error("Please give this recipe some directions to follow.");
+  }
+})], adminController.postAddRecipe);
 router.post('/add-another', isAuth, adminController.postAddAnother);
 router.post('/edit-recipe', isAuth, adminController.postEditRecipe);
 router.get('/edit-recipe/:recipeId', isAuth, adminController.getEditRecipe);

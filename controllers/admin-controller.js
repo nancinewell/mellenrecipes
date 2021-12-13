@@ -61,6 +61,8 @@ exports.getAddRecipe = async (req, res, next) => {
     let category = req.body.category;
     const newCategory = req.body.newCategory;
 
+    console.log(`category: ${category}`);
+
     if(category == "newCategory"){
       category = newCategory;
     }
@@ -80,6 +82,7 @@ exports.getAddRecipe = async (req, res, next) => {
           editing: false,
           hasError: true,
           user: req.user,
+          categories: allCategories,
           isAuthenticated: false,
           errorMessage: errors.array()[0].msg,
           recipe: {name: name, ingredients: ingredients, description: description},
@@ -112,7 +115,7 @@ exports.getAddRecipe = async (req, res, next) => {
           editing: false,
           user: req.user,
           isAuthenticated: false,
-          errorMessage: [],
+          errorMessage: [err],
           hasError: false,
           recipe: {name: name, ingredients: ingredients, directions: directions, description: description},
           validationErrors: errors.array()

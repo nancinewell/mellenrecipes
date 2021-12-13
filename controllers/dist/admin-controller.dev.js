@@ -120,6 +120,7 @@ exports.postAddRecipe = function (req, res, next) {
   var description = req.body.description;
   var category = req.body.category;
   var newCategory = req.body.newCategory;
+  console.log("category: ".concat(category));
 
   if (category == "newCategory") {
     category = newCategory;
@@ -140,6 +141,7 @@ exports.postAddRecipe = function (req, res, next) {
       editing: false,
       hasError: true,
       user: req.user,
+      categories: allCategories,
       isAuthenticated: false,
       errorMessage: errors.array()[0].msg,
       recipe: {
@@ -174,7 +176,7 @@ exports.postAddRecipe = function (req, res, next) {
       editing: false,
       user: req.user,
       isAuthenticated: false,
-      errorMessage: [],
+      errorMessage: [err],
       hasError: false,
       recipe: {
         name: name,

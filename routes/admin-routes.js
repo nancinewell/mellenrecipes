@@ -10,7 +10,30 @@ router.get('/myrecipes', isAuth, adminController.getRecipes);
 
 router.get('/add-recipe', isAuth, adminController.getAddRecipe);
 
-router.post('/add-recipe', isAuth, adminController.postAddRecipe);
+router.post('/add-recipe', isAuth,
+[
+    check('category').custom((value, {req}) => {
+        if(!value){
+            throw new Error("Please select a category for this recipe.");
+        }
+        return true;
+    }),
+    check('name').custom((value, {req}) =>{
+        if(!value){
+            throw new Error("Please give this recipe a name.");
+        }
+    }),
+    check('ingredients').custom((value, {req}) =>{
+        if(!value){
+            throw new Error("Please list the ingredients used in this recipe.");
+        }
+    }),
+    check('directions').custom((value, {req}) =>{
+        if(!value){
+            throw new Error("Please give this recipe some directions to follow.");
+        }})
+],
+ adminController.postAddRecipe);
 
 router.post('/add-another', isAuth, adminController.postAddAnother);
 
