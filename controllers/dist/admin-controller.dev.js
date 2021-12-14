@@ -147,7 +147,9 @@ exports.postAddRecipe = function (req, res, next) {
       recipe: {
         name: name,
         ingredients: ingredients,
-        description: description
+        directions: directions,
+        description: description,
+        category: category
       },
       validationErrors: errors.array()
     });

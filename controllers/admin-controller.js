@@ -85,7 +85,7 @@ exports.getAddRecipe = async (req, res, next) => {
           categories: allCategories,
           isAuthenticated: false,
           errorMessage: errors.array()[0].msg,
-          recipe: {name: name, ingredients: ingredients, description: description},
+          recipe: {name: name, ingredients: ingredients, directions: directions, description: description, category: category},
           validationErrors: errors.array()
         })
       }

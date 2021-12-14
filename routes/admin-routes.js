@@ -18,20 +18,20 @@ router.post('/add-recipe', isAuth,
         }
         return true;
     }),
-    check('name').custom((value, {req}) =>{
-        if(!value){
-            throw new Error("Please give this recipe a name.");
-        }
-    }),
-    check('ingredients').custom((value, {req}) =>{
-        if(!value){
-            throw new Error("Please list the ingredients used in this recipe.");
-        }
-    }),
-    check('directions').custom((value, {req}) =>{
-        if(!value){
-            throw new Error("Please give this recipe some directions to follow.");
-        }})
+    // check('name').custom((value, {req}) =>{
+    //     if(!value){
+    //         throw new Error("Please give this recipe a name.");
+    //     }
+    // }),
+    // check('ingredients').custom((value, {req}) =>{
+    //     if(!value){
+    //         throw new Error("Please list the ingredients used in this recipe.");
+    //     }
+    // }),
+    // check('directions').custom((value, {req}) =>{
+    //     if(!value){
+    //         throw new Error("Please give this recipe some directions to follow.");
+    //     }})
 ],
  adminController.postAddRecipe);
 
