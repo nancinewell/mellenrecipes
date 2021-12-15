@@ -14,7 +14,15 @@ var router = express.Router();
 router.get('/login', authController.getLogin);
 router.get('/signup', authController.getSignup);
 router.post('/login', [body('email').isEmail().withMessage('Please enter a valid email').trim()], authController.postLogin);
-router.post('/signup', [body('email').isEmail().withMessage('Please enter a valid email').trim()], authController.postSignup);
+router.post('/signup', [body('email').isEmail().withMessage('Please enter a valid email').trim().custom(function (value) {
+  return User.findOne({
+    where: {
+      email: value
+    }
+  }).then(function () {
+    return Promise.reject('A user has already signed up with that email address.');
+  });
+})], authController.postSignup);
 router.post('/logout', authController.postLogout);
 router.get('/reset', authController.getReset);
 router.get('/reset/:token', authController.getNewPassword);

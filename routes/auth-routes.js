@@ -22,6 +22,12 @@ router.post('/signup',[
     body('email')
         .isEmail().withMessage('Please enter a valid email')
         .trim()
+        .custom(value => {
+            return User.findOne({ where: {email: value} })
+               .then(() => {
+                  return Promise.reject('A user has already signed up with that email address.')
+               })
+            })
 ], authController.postSignup);
 
 router.post('/logout', authController.postLogout);
