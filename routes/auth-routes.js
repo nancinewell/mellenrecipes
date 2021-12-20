@@ -22,14 +22,15 @@ router.post('/signup',[
     body('email')
         .isEmail().withMessage('Please enter a valid email')
         .trim()
-        .custom(value => {
-            return User.findOne({ where: {email: value} })
-               .then(result => {
-                  if(result){
-                      return Promise.reject('A user has already signed up with that email address.')
-                  }
-               })
-            })
+        // .custom(value => {
+        //     return User.findOne({ where: {email: value} })
+        //        .then(result => {
+        //           if(result){
+        //               console.log()
+        //               return Promise.reject('A user has already signed up with that email address.')
+        //           }
+        //        })
+        //     })
 ], authController.postSignup);
 
 router.post('/logout', authController.postLogout);
