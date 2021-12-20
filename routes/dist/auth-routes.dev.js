@@ -19,8 +19,10 @@ router.post('/signup', [body('email').isEmail().withMessage('Please enter a vali
     where: {
       email: value
     }
-  }).then(function () {
-    return Promise.reject('A user has already signed up with that email address.');
+  }).then(function (result) {
+    if (result) {
+      return Promise.reject('A user has already signed up with that email address.');
+    }
   });
 })], authController.postSignup);
 router.post('/logout', authController.postLogout);

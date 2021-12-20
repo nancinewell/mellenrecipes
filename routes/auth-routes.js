@@ -24,8 +24,10 @@ router.post('/signup',[
         .trim()
         .custom(value => {
             return User.findOne({ where: {email: value} })
-               .then(() => {
-                  return Promise.reject('A user has already signed up with that email address.')
+               .then(result => {
+                  if(result){
+                      return Promise.reject('A user has already signed up with that email address.')
+                  }
                })
             })
 ], authController.postSignup);
